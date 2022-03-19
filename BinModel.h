@@ -16,6 +16,5 @@ public:
     BinModel(double S0_,double U_,double D_,double R_);
 };
 
-
 #endif // BinModel_h
 
