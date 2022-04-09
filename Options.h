@@ -2,25 +2,38 @@
 #define Options_h
 #include "BinModel.h"
 
-double CallPayoff(double S, double K);
-double PutPayoff(double S, double K);
-double DigitalCall(double S, double K);
-double DigitalPut(double S, double K);
-
 class Option{
 private:
-    double K;
     int N;
-    double(*Payoff)(double S, double K);
 public:
+    //virtual double Payoff(double S){return 0.0;}
+    virtual double Payoff(double S)=0;
     double PriceByCRR(BinModel model);
-
-    Option(int N_, double K_, double(*Payoff_)(double, double));
-
+    Option(int N_) {N=N_;};
 };
 
 class Call: public Option{
+private:
+    double K;
+public:
+    Call(int N, double K_): Option(N) {K=K_;}
+    double Payoff(double S);
+};
 
+class Put: public Option{
+private:
+    double K;
+public:
+    Put(int N, double K_): Option(N) {K=K_;}
+    double Payoff(double S);
+};
+
+class Butterfly: public Option{
+private:
+    double K1, K2;
+public:
+    Butterfly(int N, double K1_, double K2_): Option(N) {K1=K1_, K2=K2_;}
+    double Payoff(double S);
 };
 
 #endif // Options_h
